@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
@@ -13,17 +12,30 @@ module.exports = {
 		rules: [
 			{	
 				test: /\.js$/,
-				exclude: /node_modules/,
-				loader: 'babel-loader'
+			    exclude: /node_modules/,
+			    use: {
+			    	loader: 'babel-loader'
+			    }
 			},
 			{
 				test: /\.s?css$/,
 				use: [process.env.NODE_ENV === 'production' ? MiniCssExtractPlugin.loader : 'style-loader', 'css-loader', 'sass-loader']
-			}
+			},
+			{
+		        test: /\.(woff|woff2|eot|ttf|otf)$/,
+		        use: [
+		        	{
+		        		loader: 'file-loader',
+		        		options: {
+		        			name: '[name].[contenthash].[ext]',
+		        			outputPath: 'font/'
+		        		}
+		        	}
+		        ]
+	        },
 		]
 	},
 	plugins: [
-		new CleanWebpackPlugin(),
 		new HtmlWebpackPlugin({
 			template: './src/html/index.html',
 			hash: true

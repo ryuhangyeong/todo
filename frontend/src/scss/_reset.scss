@@ -1,11 +1,13 @@
-body {
-	font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", 나눔고딕, "Nanum Gothic", "Noto Sans KR", "Noto Sans CJK KR", arial, 돋움, Dotum, Tahoma, Geneva, sans-serif;
+body, button, input, select, table, textarea {
+	font-family: -apple-system, BlinkMacSystemFont, "NotoSans Light", "Helvetica Neue", "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", 나눔고딕, "Nanum Gothic", "Noto Sans KR", "Noto Sans CJK KR", arial, 돋움, Dotum, Tahoma, Geneva, sans-serif;
 }
 
-body, h1 {
+body, h1, input, ul, p {
 	margin: 0;
 	padding: 0;
 }
+
+ul { list-style: none; }
 
 header {
 	background-color: #4c8bf5;
@@ -16,10 +18,4 @@ header {
 	align-items: center;
 }
 
-header p {
-	font-family: "NotoSans Bold", sans-serif;
-}
-
-header h1 {
-	font-family: "Fira Mono Regular", monospace;
-}
+header h1 { font-family: "FiraMono Bold", monospace; }

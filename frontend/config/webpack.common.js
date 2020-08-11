@@ -36,6 +36,7 @@ module.exports = {
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: "./src/html/index.html",
+			favicon: "./src/favicon.ico",
 			hash: true
 		}),
 		...(process.env.NODE_ENV === "production" ? [new MiniCssExtractPlugin({ filename: "index.css" })] : [])

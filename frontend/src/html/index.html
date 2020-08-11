@@ -2,11 +2,33 @@
 <html lang="ko">
 <head>
 	<meta charset="utf-8">
-	<title>할일 관리</title>
+	<title>Todo.</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 	<header>
 		<h1>Todo.</h1>
 	</header>
+	<main class="container">
+		<section class="wrap">
+			<ul class="statistics">
+				<li class="statistics__item">
+					<strong>100</strong>
+					<p>All</p>
+				</li>
+				<li class="statistics__item">
+					<strong>0</strong>
+					<p>Active</p>
+				</li>
+				<li class="statistics__item">
+					<strong>0</strong>
+					<p>Completed</p>
+				</li>
+			</ul>
+		</section>
+		<section class="control">
+			<input type="text" name="control" class="control__input" placeholder="해야할 일을 입력해주세요." autofocus>
+		</section>
+	</main>
 </body>
 </html>

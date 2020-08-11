@@ -1,0 +1,11 @@
+.control {
+	margin-top: 10px;
+
+	&__input {
+		box-sizing: border-box;
+		padding: 10px;
+		width: 100%;
+		border: none;
+		@include shadow;
+	}
+}

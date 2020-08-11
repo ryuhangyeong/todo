@@ -1,0 +1,24 @@
+.statistics {
+	display: flex;
+
+	&__item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		flex: 1;
+		cursor: pointer;
+
+		&:hover {
+			background-color: #ddd;
+		}
+		
+		strong {
+			font-family: "NotoSans Bold", monospace;
+			font-size: 25px;
+		}
+
+		p {
+			font-family: "FiraMono Regular", monospace;
+		}
+	}
+}

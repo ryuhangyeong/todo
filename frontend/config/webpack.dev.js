@@ -1,20 +1,33 @@
-const path = require('path');
-const { merge } = require('webpack-merge');
-const common = require('./webpack.common.js');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const path = require("path");
+const { merge } = require("webpack-merge");
+const common = require("./webpack.common.js");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = merge(common, {
-	mode: 'development',
+	mode: "development",
 	devServer: {
-		contentBase: path.join(__dirname, '../dist'),
-		publicPath: '/',
+		contentBase: path.join(__dirname, "../dist"),
+		publicPath: "/",
 		proxy: {
-			'/api': 'http://localhost:4000'
+			"/api": "http://localhost:4000"
 		}
+	},
+	module: {
+		rules: [
+			{
+		        enforce: "pre",
+		        test: /\.js$/,
+		        loader: "eslint-loader",
+		        exclude: /node_modules/,
+		        options: {
+		        	fix: true
+		        }
+		    }
+		]
 	},
 	plugins: [
 		new BundleAnalyzerPlugin({
-            analyzerHost: '127.0.0.1',
+            analyzerHost: "127.0.0.1",
             analyzerPort: 8081
         })
 	]

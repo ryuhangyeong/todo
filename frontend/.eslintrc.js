@@ -1,4 +1,5 @@
 module.exports = {
+    "parser": "babel-eslint",
     "env": {
         "browser": true,
         "commonjs": true,
@@ -6,7 +7,7 @@ module.exports = {
     },
     "extends": [
         "eslint:recommended",
-        "plugin:prettier/recommended"
+        "plugin:prettier/recommended",
     ],
     "parserOptions": {
         "sourceType": "module"

@@ -6,8 +6,7 @@ import mysql from "mysql2/promise";
 dotenv.config();
 
 const app = express();
-const PORT = 4000;
-const { DB, DB_HOST, DB_USER, DB_PASS } = process.env;
+const { PORT, DB, DB_HOST, DB_USER, DB_PASS } = process.env;
 
 let pool = mysql.createPool({
     database: DB,

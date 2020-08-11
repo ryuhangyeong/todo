@@ -8,14 +8,4 @@ body, h1, input, ul, p {
 }
 
 ul { list-style: none; }
-
-header {
-	background-color: #4c8bf5;
-	color: #fff;
-	height: 200px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-header h1 { font-family: "FiraMono Bold", monospace; }
+a { text-decoration: none; color: #000; }

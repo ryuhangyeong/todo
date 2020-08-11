@@ -4,12 +4,11 @@
 	&__item {
 		display: flex;
 		flex-direction: column;
-		align-items: center;
 		flex: 1;
 		cursor: pointer;
 
 		&:hover {
-			background-color: #ddd;
+			background-color: $oc-gray-1;
 		}
 		
 		strong {
@@ -20,5 +19,11 @@
 		p {
 			font-family: "FiraMono Regular", monospace;
 		}
+	}
+
+	&__link {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 }

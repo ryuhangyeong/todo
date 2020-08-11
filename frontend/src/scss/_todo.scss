@@ -1,3 +1,24 @@
 .todo {
-	
+	border: 1px solid $oc-gray-2;
+
+	&__item {
+		padding: 10px;
+		border-bottom: 1px solid $oc-gray-2;
+		cursor: pointer;
+		position: relative;
+
+		&:last-child {
+			border-bottom: none;
+		}
+
+		/*&:after {
+			display: block;
+			content: "&times;";
+			position: absolute;
+			top: 0; right: 0;
+			width: 100px;
+			height: 100%;
+			background-color: red;
+		}*/
+	}
 }

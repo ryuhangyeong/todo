@@ -18,7 +18,7 @@ let pool = mysql.createPool({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.set("view engine", "html");
+app.set('view engine', "html");
 app.set("views", __dirname + "/dist");
 app.engine("html", require("ejs").renderFile);
 app.use(express.static(path.join(__dirname, "../dist")));

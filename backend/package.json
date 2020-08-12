@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint-auto-fix src/**/*.js",
     "dev": "nodemon --exec babel-node src/index.js",
-    "start": "babel-node src/index.js"
+    "start": "babel-node src/index.js",
+    "test": "jest --config=jest.config.js"
   },
   "keywords": [],
   "author": "",
@@ -21,13 +22,16 @@
     "@babel/core": "^7.11.1",
     "@babel/node": "^7.10.5",
     "@babel/preset-env": "^7.11.0",
+    "@babel/register": "^7.10.5",
     "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.3.0",
     "dotenv": "^8.2.0",
     "eslint": "^7.6.0",
     "eslint-auto-fix": "^1.0.3",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "husky": "^4.2.5",
+    "jest": "^26.3.0",
     "nodemon": "^2.0.4",
     "prettier": "^2.0.5"
   },

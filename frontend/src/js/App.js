@@ -3,24 +3,13 @@ import Main from "./components/Main";
 import Statistics from "./components/Statistics";
 import Form from "./components/Form";
 import Todo from "./components/Todo";
+import statistics from "./utils/statistics";
+import request from "./utils/request";
 
 export default class App {
     state = {
         list: [],
-        statistics: [
-            {
-                label: "All",
-                count: 0,
-            },
-            {
-                label: "Active",
-                count: 0,
-            },
-            {
-                label: "Completed",
-                count: 0,
-            },
-        ],
+        statistics: [],
     };
 
     constructor($target) {
@@ -28,17 +17,10 @@ export default class App {
     }
 
     async init($target) {
-        const data = await fetch("/api/todo");
-        const list = await data.json();
+        const list = await request({ url: "/", opts: {} });
 
         this.state.list = list;
-        this.state.statistics[0].count = this.state.list.length;
-        this.state.statistics[1].count = this.state.list.filter(
-            (t) => !t.completed
-        ).length;
-        this.state.statistics[2].count = this.state.list.filter(
-            (t) => t.completed
-        ).length;
+        this.state.statistics = statistics(this.state.list);
 
         this.$target = $target;
 
@@ -57,15 +39,13 @@ export default class App {
         this.form = new Form({
             $target: this.main.$main,
             onCreate: async (title) => {
-                const data = await fetch("/api/todo", {
-                    method: "POST",
-                    body: JSON.stringify({ title }),
-                    headers: {
-                        "Content-Type": "application/json",
+                const { insertId: id } = await request({
+                    url: "/",
+                    opts: {
+                        method: "POST",
+                        body: JSON.stringify({ title }),
                     },
                 });
-
-                const { insertId: id } = await data.json();
 
                 this.todo.create({
                     id,

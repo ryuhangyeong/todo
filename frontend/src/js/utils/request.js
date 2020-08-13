@@ -6,12 +6,12 @@ const defaultOpts = {
     },
 };
 
-export default request = async ({ url, opts = defaultOpts }) => {
-    try {
-        const data = await fetch(`${API_ENDPOINT}/${url}`, opts);
-        const res = await data.json();
-        return res;
-    } catch (e) {
-        throw e;
-    }
+export default async ({ url, opts }) => {
+    const data = await fetch(
+        `${API_ENDPOINT}/${url}`,
+        Object.assign(opts, defaultOpts)
+    );
+    const res = await data.json();
+
+    return res;
 };

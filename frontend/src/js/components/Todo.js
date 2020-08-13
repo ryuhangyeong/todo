@@ -1,3 +1,6 @@
+import statistics from "../utils/statistics";
+import request from "../utils/request";
+
 export default class Todo {
     $wrap = null;
     $todo = null;
@@ -81,36 +84,24 @@ export default class Todo {
     }
 
     async fetchToggleCompleted(id) {
-        await fetch(`/api/todo/${id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
+        await request({
+            url: `/${id}`,
+            opts: {
+                method: "PUT",
             },
         });
 
         const index = this.data.findIndex((d) => d.id === id);
         this.data[index].completed = this.data[index].completed ? 0 : 1;
-        this.statistics.setState([
-            {
-                label: "All",
-                count: this.data.length,
-            },
-            {
-                label: "Active",
-                count: this.data.filter((t) => !t.completed).length,
-            },
-            {
-                label: "Completed",
-                count: this.data.filter((t) => t.completed).length,
-            },
-        ]);
+
+        this.statistics.setState(statistics(this.data));
     }
 
     async fetchDelete(id) {
-        await fetch(`/api/todo/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
+        await request({
+            url: `/${id}`,
+            opts: {
+                method: "DELETE",
             },
         });
     }

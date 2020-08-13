@@ -7,12 +7,14 @@ const FlowBabelWebpackPlugin = require("flow-babel-webpack-plugin");
 module.exports = merge(common, {
 	mode: "development",
 	devServer: {
+		hot: true,
 		contentBase: path.join(__dirname, "../dist"),
 		publicPath: "/",
 		proxy: {
-			"/api": "http://localhost:4000"
+			"/api": "http://localhost:80"
 		}
 	},
+	devtool: "cheap-eval-source-map",
 	module: {
 		rules: [
 			{

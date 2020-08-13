@@ -20,6 +20,10 @@ module.exports = {
 				use: [process.env.NODE_ENV === "production" ? MiniCssExtractPlugin.loader : "style-loader", "css-loader", "sass-loader"]
 			},
 			{
+		        test: /\.png$/,
+		        loader: "file-loader"
+		    },
+			{
 		        test: /\.(woff|woff2|eot|ttf|otf)$/,
 		        use: [
 		        	{

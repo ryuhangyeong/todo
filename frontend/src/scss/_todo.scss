@@ -1,24 +1,67 @@
 .todo {
-	border: 1px solid $oc-gray-2;
+	overflow: hidden;
 
 	&__item {
+		display: flex;
 		padding: 10px;
-		border-bottom: 1px solid $oc-gray-2;
+		border: 1px solid $oc-gray-2;
+		margin-top: -1px;
 		cursor: pointer;
 		position: relative;
 
-		&:last-child {
-			border-bottom: none;
+		&:first-child {
+			margin-top: 1px;
 		}
 
-		/*&:after {
-			display: block;
-			content: "&times;";
-			position: absolute;
-			top: 0; right: 0;
-			width: 100px;
-			height: 100%;
-			background-color: red;
-		}*/
+		&:last-child {
+			border-bottom: 1px solid $oc-gray-2;
+		}
+
+		&:hover .todo__delete {
+			display: flex;
+		}
+
+		&--delete {
+			animation-duration: 1s;
+  			animation-name: delete;
+		}
+
+		p {
+			padding-left: 10px;
+			overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+		}
+	}
+
+	&__delete {
+		display: none;
+		margin-left: auto;
+	}
+
+	&__completed {
+		display: none;
+
+		&:checked + label {
+			background: url(../images/checkbox.png) -52px -10px;
+		}
+
+		&:checked ~ p {
+			text-decoration: line-through
+		}
+	}
+
+	&__label {
+	    min-width: 23px; height: 23px;
+	    background: url(../images/checkbox.png) -10px -10px;
+	}
+
+	@keyframes delete {
+		from {
+			transform: translateX(0);
+		} to {
+			transform: translateX(100px);
+			opacity: 0;
+		}
 	}
 }

@@ -21,15 +21,9 @@ export default class Statistics {
     }
 
     event() {
-        this.$statistics.addEventListener(
-            "click",
-            (e) => {
-                this.onMode(
-                    e.target.closest(".statistics__link").dataset.label
-                );
-            },
-            { capture: false }
-        );
+        this.$statistics.addEventListener("click", (e) => {
+            this.onMode(e.target.closest(".statistics__link").dataset.label);
+        });
     }
 
     setState(nextData) {

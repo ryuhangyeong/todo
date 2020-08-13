@@ -8,20 +8,8 @@ import statistics from "./utils/statistics";
 export default class App {
     state = {
         list: [],
-        statistics: [
-            {
-                label: "All",
-                count: 0,
-            },
-            {
-                label: "Active",
-                count: 0,
-            },
-            {
-                label: "Completed",
-                count: 0,
-            },
-        ],
+        statistics: [],
+        mode: "All",
     };
 
     constructor($target) {
@@ -46,6 +34,7 @@ export default class App {
             initialData: this.state.statistics,
             onMode: (mode) => {
                 this.todo.filter(mode);
+                this.state.mode = mode;
             },
         });
 
@@ -72,7 +61,10 @@ export default class App {
 
         this.todo = new Todo({
             $target: this.main.$main,
-            initialData: this.state.list,
+            initialData: {
+                list: this.state.list,
+                mode: this.state.mode,
+            },
             statistics: this.statistics,
         });
     }

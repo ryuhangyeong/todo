@@ -25,7 +25,12 @@ export default class Form {
             const { value } = e.target;
 
             if (!value.length) return;
-            if (e.key === "Enter") this.onCreate(value);
+            if (e.key === "Enter") {
+                this.$input.value = "";
+                this.onCreate(value);
+            }
         });
+
+        this.$input.addEventListener("click", () => (this.$input.value = ""));
     }
 }

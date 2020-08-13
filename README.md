@@ -7,7 +7,7 @@
 	- webpack
 	- babel
 	- jest
-	- flow
+	- ~flow~
 	- eslint
 	- prettier
 
@@ -17,5 +17,8 @@
 
 3. 앞으로 더 해보고 싶은 것
 
-	- CI/CD
-	- Https 적용
+	- [ ] CI/CD
+	- [ ] Https 적용
+	- [ ] 무중단 배포
+	- [ ] 기타 등등
+	

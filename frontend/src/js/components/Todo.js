@@ -3,7 +3,8 @@ import statistics from "../utils/statistics";
 export default class Todo {
     $wrap = null;
     $todo = null;
-    data = null;
+    list = null;
+    mode = null;
     statistics = null;
 
     constructor({ $target, initialData, statistics }) {
@@ -15,7 +16,8 @@ export default class Todo {
         this.$wrap.appendChild(this.$todo);
         $target.appendChild(this.$wrap);
 
-        this.data = initialData;
+        this.list = initialData.list;
+        this.mode = initialData.mode;
 
         this.statistics = statistics;
 
@@ -39,17 +41,14 @@ export default class Todo {
     }
 
     create(newData) {
-        this.setState([newData, ...this.data]);
-    }
-
-    setState(nextData) {
-        this.data = nextData;
+        this.list = [newData, ...this.list];
         this.render();
+        this.statistics.setState(statistics(this.list));
     }
 
     render() {
-        if (!this.data.length) return;
-        this.$todo.innerHTML = this.data
+        if (!this.list.length) return;
+        this.$todo.innerHTML = this.list
             .map(
                 (t) =>
                     `
@@ -72,10 +71,12 @@ export default class Todo {
         for (const todo of document.querySelectorAll(".todo__item"))
             todo.style.display = "flex";
 
-        this.data.forEach((d) => {
+        this.list.forEach((d) => {
             if (mode === "Active" && d.completed) this._hide(d.id);
             if (mode === "Completed" && !d.completed) this._hide(d.id);
         });
+
+        this.mode = mode;
     }
 
     _hide(id) {
@@ -90,10 +91,11 @@ export default class Todo {
             },
         });
 
-        const index = this.data.findIndex((d) => d.id === id);
-        this.data[index].completed = this.data[index].completed ? 0 : 1;
+        const index = this.list.findIndex((d) => d.id === id);
+        this.list[index].completed = this.list[index].completed ? 0 : 1;
+        this.statistics.setState(statistics(this.list));
 
-        this.statistics.setState(statistics(this.data));
+        this.filter(this.mode);
     }
 
     async fetchDelete(id) {

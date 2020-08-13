@@ -34,7 +34,6 @@ export default class App {
             initialData: this.state.statistics,
             onMode: (mode) => {
                 this.todo.filter(mode);
-                this.state.mode = mode;
             },
         });
 

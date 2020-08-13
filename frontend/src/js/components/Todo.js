@@ -22,6 +22,8 @@ export default class Todo {
         this.statistics = statistics;
 
         this.render();
+        this.filter(this.mode);
+
         this.event();
     }
 
@@ -34,9 +36,8 @@ export default class Todo {
                 },
             } = e.target;
 
-            if (className === "todo__delete") this.fetchDelete(+id);
-            else if (className === "todo__label")
-                this.fetchToggleCompleted(+id);
+            if (className === "todo__delete") this.delete(+id, e.target);
+            else if (className === "todo__label") this.toggle(+id);
         });
     }
 
@@ -83,7 +84,7 @@ export default class Todo {
         document.querySelector(`[data-id="${id}"]`).style.display = "none";
     }
 
-    async fetchToggleCompleted(id) {
+    async toggle(id) {
         await fetch(`/api/todo/${id}`, {
             method: "PUT",
             headers: {
@@ -98,12 +99,22 @@ export default class Todo {
         this.filter(this.mode);
     }
 
-    async fetchDelete(id) {
+    async delete(id, target) {
         await fetch(`/api/todo/${id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
             },
         });
+
+        target.parentNode.classList.add("todo__item--delete");
+        setTimeout(function () {
+            target.parentNode.remove();
+        }, 1000);
+        this.list.splice(
+            this.list.findIndex((d) => d.id === id),
+            1
+        );
+        this.statistics.setState(statistics(this.list));
     }
 }

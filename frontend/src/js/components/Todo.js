@@ -1,5 +1,4 @@
 import statistics from "../utils/statistics";
-import request from "../utils/request";
 
 export default class Todo {
     $wrap = null;
@@ -84,10 +83,10 @@ export default class Todo {
     }
 
     async fetchToggleCompleted(id) {
-        await request({
-            url: `/${id}`,
-            opts: {
-                method: "PUT",
+        await fetch(`/api/todo/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
             },
         });
 
@@ -98,10 +97,10 @@ export default class Todo {
     }
 
     async fetchDelete(id) {
-        await request({
-            url: `/${id}`,
-            opts: {
-                method: "DELETE",
+        await fetch(`/api/todo/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
             },
         });
     }

@@ -4,12 +4,24 @@ import Statistics from "./components/Statistics";
 import Form from "./components/Form";
 import Todo from "./components/Todo";
 import statistics from "./utils/statistics";
-import request from "./utils/request";
 
 export default class App {
     state = {
         list: [],
-        statistics: [],
+        statistics: [
+            {
+                label: "All",
+                count: 0,
+            },
+            {
+                label: "Active",
+                count: 0,
+            },
+            {
+                label: "Completed",
+                count: 0,
+            },
+        ],
     };
 
     constructor($target) {
@@ -17,7 +29,8 @@ export default class App {
     }
 
     async init($target) {
-        const list = await request({ url: "/", opts: {} });
+        const data = await fetch("/api/todo");
+        const list = await data.json();
 
         this.state.list = list;
         this.state.statistics = statistics(this.state.list);
@@ -39,13 +52,15 @@ export default class App {
         this.form = new Form({
             $target: this.main.$main,
             onCreate: async (title) => {
-                const { insertId: id } = await request({
-                    url: "/",
-                    opts: {
-                        method: "POST",
-                        body: JSON.stringify({ title }),
+                const data = await fetch("/api/todo", {
+                    method: "POST",
+                    body: JSON.stringify({ title }),
+                    headers: {
+                        "Content-Type": "application/json",
                     },
                 });
+
+                const { insertId: id } = await data.json();
 
                 this.todo.create({
                     id,

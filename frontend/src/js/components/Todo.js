@@ -5,7 +5,7 @@ export default class Todo {
     $wrap = null;
     $todo = null;
     list = null;
-    mode = null;
+    routes = null;
     statistics = null;
 
     constructor({ $target, initialData, statistics }) {
@@ -18,12 +18,12 @@ export default class Todo {
         $target.appendChild(this.$wrap);
 
         this.list = initialData.list;
-        this.mode = initialData.mode;
+        this.routes = initialData.routes;
 
         this.statistics = statistics;
 
         this.render();
-        this.filter(this.mode);
+        this.filter(this.routes);
 
         this.event();
     }
@@ -67,16 +67,16 @@ export default class Todo {
             .join("");
     }
 
-    filter(mode) {
+    filter(routes) {
         for (const todo of document.querySelectorAll(".todo__item"))
             todo.style.display = "flex";
 
         this.list.forEach((d) => {
-            if (mode === "Active" && d.completed) this._hide(d.id);
-            if (mode === "Completed" && !d.completed) this._hide(d.id);
+            if (routes === "Active" && d.completed) this._hide(d.id);
+            if (routes === "Completed" && !d.completed) this._hide(d.id);
         });
 
-        this.mode = mode;
+        this.routes = routes;
     }
 
     _hide(id) {
@@ -95,8 +95,9 @@ export default class Todo {
 
         this.list[index].completed = this.list[index].completed ? 0 : 1;
         this.statistics.setState(statistics(this.list));
+        this.statistics.active(this.routes);
 
-        this.filter(this.mode);
+        this.filter(this.routes);
     }
 
     async delete(id, target) {
@@ -109,14 +110,13 @@ export default class Todo {
 
         target.parentNode.classList.add("todo__item--hide");
 
-        setTimeout(() => {
-            this.$todo.removeChild(target.parentNode);
-        }, 1000);
+        setTimeout(() => this.$todo.removeChild(target.parentNode), 1000);
 
         this.list.splice(
             this.list.findIndex((d) => d.id === id),
             1
         );
         this.statistics.setState(statistics(this.list));
+        this.statistics.active(this.routes);
     }
 }

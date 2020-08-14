@@ -3,7 +3,7 @@ export default class Statistics {
     $statistics = null;
     data = null;
 
-    constructor({ $target, initialData, onMode }) {
+    constructor({ $target, initialData }) {
         this.$wrap = document.createElement("section");
         this.$wrap.className = "wrap";
 
@@ -14,19 +14,8 @@ export default class Statistics {
         $target.appendChild(this.$wrap);
 
         this.data = initialData;
-        this.onMode = onMode;
 
         this.render();
-        this.event();
-    }
-
-    event() {
-        this.$statistics.addEventListener("click", (e) => {
-            const { className } = e.target;
-
-            if (className === "statistics__link")
-                this.onMode(e.target.dataset.label);
-        });
     }
 
     setState(nextData) {
@@ -41,7 +30,7 @@ export default class Statistics {
             .map(
                 (s) => `
         	<li class="statistics__item">
-				<a href="#" class="statistics__link" data-label="${s.label}">
+				<a href="#${s.label}" class="statistics__link" data-label="${s.label}">
 					<strong>${s.count}</strong>
 					<p>${s.label}</p>
 				</a>
@@ -49,5 +38,12 @@ export default class Statistics {
         `
             )
             .join("");
+    }
+
+    active(hash) {
+        for (const item of document.querySelectorAll(".statistics__item"))
+            item.className = "statistics__item";
+        document.querySelector(`[data-label="${hash}"]`).parentNode.className +=
+            " statistics__item--active";
     }
 }

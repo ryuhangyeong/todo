@@ -17,10 +17,10 @@ export default class Form {
 
         this.onCreate = onCreate;
 
-        this.init();
+        this.event();
     }
 
-    init() {
+    event() {
         this.$input.addEventListener("keyup", (e) => {
             const { value } = e.target;
 

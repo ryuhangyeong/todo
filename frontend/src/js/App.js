@@ -5,16 +5,18 @@ import Form from "./components/Form";
 import Todo from "./components/Todo";
 import statistics from "./utils/statistics";
 import { request, API_ENDPOINT } from "./utils/request";
+import { getHash } from "./utils/routes";
 
 export default class App {
     state = {
         list: [],
         statistics: [],
-        mode: "All",
+        routes: "All",
     };
 
     constructor($target) {
         this.init($target);
+        this.event();
     }
 
     async init($target) {
@@ -32,9 +34,6 @@ export default class App {
         this.statistics = new Statistics({
             $target: this.main.$main,
             initialData: this.state.statistics,
-            onMode: (mode) => {
-                this.todo.filter(mode);
-            },
         });
 
         this.form = new Form({
@@ -53,6 +52,9 @@ export default class App {
                     title,
                     completed: false,
                 });
+
+                window.location.hash = "#All";
+                this.state.routes = "All";
             },
         });
 
@@ -60,9 +62,27 @@ export default class App {
             $target: this.main.$main,
             initialData: {
                 list: this.state.list,
-                mode: this.state.mode,
+                routes: this.state.routes,
             },
             statistics: this.statistics,
         });
+
+        this.initRoutes();
+    }
+
+    initRoutes() {
+        const hash = getHash();
+
+        this.state.routes = hash;
+        this.todo.filter(hash);
+        this.statistics.active(hash);
+    }
+
+    event() {
+        window.onhashchange = () => {
+            const hash = getHash();
+            this.todo.filter(hash);
+            this.statistics.active(hash);
+        };
     }
 }

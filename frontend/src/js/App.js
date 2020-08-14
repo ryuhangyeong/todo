@@ -80,7 +80,8 @@ export default class App {
     event() {
         window.onhashchange = () => {
             const hash = getHash();
-            this.todo.filter(getHash());
+
+            this.todo.filter(hash);
             this.statistics.active(hash);
         };
     }

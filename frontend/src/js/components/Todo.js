@@ -7,6 +7,8 @@ export default class Todo {
     list = null;
     routes = null;
     statistics = null;
+    modal = null;
+    dimmed = null;
 
     constructor({ $target, initialData, statistics }) {
         this.$wrap = document.createElement("section");
@@ -25,11 +27,11 @@ export default class Todo {
         this.render();
         this.filter(this.routes);
 
-        this.event();
+        this.event($target);
     }
 
-    event() {
-        this.$todo.addEventListener("click", (e) => {
+    event($target) {
+        this.$todo.addEventListener("click", async (e) => {
             const {
                 className,
                 parentNode: {
@@ -37,8 +39,33 @@ export default class Todo {
                 },
             } = e.target;
 
-            if (className === "todo__delete") this.delete(+id, e.target);
-            else if (className === "todo__label") this.toggle(+id);
+            if (className === "todo__delete") {
+                this.delete(+id, e.target);
+            } else if (className === "todo__label") {
+                this.toggle(+id);
+            } else if (className === "todo__title") {
+                if (!this.modal) {
+                    this.moduleModal = await import(
+                        /* webpackChunkName: "modal" */ "./Modal"
+                    );
+
+                    this.modal = new this.moduleModal.default({
+                        $target,
+                    });
+
+                    this.moduleDimmed = await import(
+                        /* webpackChunkName: "dimmed" */ "./Dimmed"
+                    );
+
+                    this.dimmed = new this.moduleDimmed.default({
+                        $target: this.modal.$wrap,
+                        modal: this.modal,
+                    });
+                }
+
+                this.modal.$inner.innerText = e.target.innerText;
+                this.modal.open();
+            }
         });
     }
 
@@ -59,7 +86,7 @@ export default class Todo {
                             t.id
                         }" ${t.completed ? "checked" : ""}>
                         <label for="todo-${t.id}" class="todo__label"></label>
-                        <p>${t.title}</p>
+                        <p class="todo__title">${t.title}</p>
                         <div class="todo__delete">&times;</div>
                     </li>
                 `

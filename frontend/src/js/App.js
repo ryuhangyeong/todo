@@ -75,13 +75,12 @@ export default class App {
 
         this.state.routes = hash;
         this.todo.filter(hash);
-        this.statistics.active(hash);
     }
 
     event() {
         window.onhashchange = () => {
             const hash = getHash();
-            this.todo.filter(hash);
+            this.todo.filter(getHash());
             this.statistics.active(hash);
         };
     }

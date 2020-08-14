@@ -1,3 +1,5 @@
+import { getHash } from "../utils/routes";
+
 export default class Statistics {
     $wrap = null;
     $statistics = null;
@@ -38,6 +40,8 @@ export default class Statistics {
         `
             )
             .join("");
+
+        this.active(getHash());
     }
 
     active(hash) {

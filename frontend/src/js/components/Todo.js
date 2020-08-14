@@ -1,4 +1,5 @@
 import statistics from "../utils/statistics";
+import { request, API_ENDPOINT } from "../utils/request";
 
 export default class Todo {
     $wrap = null;
@@ -53,17 +54,15 @@ export default class Todo {
             .map(
                 (t) =>
                     `
-                        <li class="todo__item" data-id="${t.id}">
-                            <input type="checkbox" class="todo__completed" id="todo-${
-                                t.id
-                            }" ${t.completed ? "checked" : ""}>
-                            <label for="todo-${
-                                t.id
-                            }" class="todo__label"></label>
-                            <p>${t.title}</p>
-                            <div class="todo__delete">&times;</div>
-                        </li>
-                    `
+                    <li class="todo__item" data-id="${t.id}">
+                        <input type="checkbox" class="todo__completed" id="todo-${
+                            t.id
+                        }" ${t.completed ? "checked" : ""}>
+                        <label for="todo-${t.id}" class="todo__label"></label>
+                        <p>${t.title}</p>
+                        <div class="todo__delete">&times;</div>
+                    </li>
+                `
             )
             .join("");
     }
@@ -85,14 +84,15 @@ export default class Todo {
     }
 
     async toggle(id) {
-        await fetch(`/api/todo/${id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
+        await request({
+            url: `${API_ENDPOINT}/${id}`,
+            opts: {
+                method: "PUT",
             },
         });
 
         const index = this.list.findIndex((d) => d.id === id);
+
         this.list[index].completed = this.list[index].completed ? 0 : 1;
         this.statistics.setState(statistics(this.list));
 
@@ -100,17 +100,19 @@ export default class Todo {
     }
 
     async delete(id, target) {
-        await fetch(`/api/todo/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
+        await request({
+            url: `${API_ENDPOINT}/${id}`,
+            opts: {
+                method: "DELETE",
             },
         });
 
-        target.parentNode.classList.add("todo__item--delete");
-        setTimeout(function () {
-            target.parentNode.remove();
+        target.parentNode.classList.add("todo__item--hide");
+
+        setTimeout(() => {
+            this.$todo.removeChild(target.parentNode);
         }, 1000);
+
         this.list.splice(
             this.list.findIndex((d) => d.id === id),
             1

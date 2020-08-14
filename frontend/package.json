@@ -17,6 +17,7 @@
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-transform-flow-comments": "^7.10.4",
     "@babel/plugin-transform-runtime": "^7.11.0",
+    "@babel/polyfill": "^7.10.4",
     "@babel/preset-env": "^7.11.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.3.0",
@@ -51,5 +52,8 @@
       "pre-commit": "eslint src/**/*.js --fix"
     }
   },
-  "dependencies": {}
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "whatwg-fetch": "^3.4.0"
+  }
 }

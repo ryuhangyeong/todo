@@ -4,6 +4,7 @@ import Statistics from "./components/Statistics";
 import Form from "./components/Form";
 import Todo from "./components/Todo";
 import statistics from "./utils/statistics";
+import { request, API_ENDPOINT } from "./utils/request";
 
 export default class App {
     state = {
@@ -17,8 +18,7 @@ export default class App {
     }
 
     async init($target) {
-        const data = await fetch("/api/todo");
-        const list = await data.json();
+        const list = await request({ url: API_ENDPOINT, opts: {} });
 
         this.state.list = list;
         this.state.statistics = statistics(this.state.list);
@@ -40,15 +40,13 @@ export default class App {
         this.form = new Form({
             $target: this.main.$main,
             onCreate: async (title) => {
-                const data = await fetch("/api/todo", {
-                    method: "POST",
-                    body: JSON.stringify({ title }),
-                    headers: {
-                        "Content-Type": "application/json",
+                const { insertId: id } = await request({
+                    url: API_ENDPOINT,
+                    opts: {
+                        method: "POST",
+                        body: JSON.stringify({ title }),
                     },
                 });
-
-                const { insertId: id } = await data.json();
 
                 this.todo.create({
                     id,

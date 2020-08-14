@@ -22,7 +22,10 @@ export default class Statistics {
 
     event() {
         this.$statistics.addEventListener("click", (e) => {
-            this.onMode(e.target.closest(".statistics__link").dataset.label);
+            const { className } = e.target;
+
+            if (className === "statistics__link")
+                this.onMode(e.target.dataset.label);
         });
     }
 

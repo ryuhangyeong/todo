@@ -1,6 +1,7 @@
 import path from "path";
 import dotenv from "dotenv";
 import express from "express";
+import validate from "./validate";
 import db from "./db";
 
 dotenv.config();
@@ -34,6 +35,17 @@ app.route(API_ENDPOINT)
         const { title } = req.body;
 
         try {
+            validate(
+                {
+                    title: {
+                        type: String,
+                        required: true,
+                        length: { min: 1, max: 255 },
+                    },
+                },
+                req.body
+            );
+
             const [data] = await db("INSERT INTO list(title) VALUES (?)", [
                 title,
             ]);

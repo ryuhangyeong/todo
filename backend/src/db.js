@@ -19,6 +19,7 @@ export default async (query, params = []) => {
         connection.release();
         return data;
     } catch (e) {
+        console.log(e);
         throw e;
     }
 };

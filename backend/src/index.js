@@ -55,7 +55,7 @@ app.route(`${API_ENDPOINT}/:id`)
             const [
                 updateData,
             ] = await db("UPDATE list SET completed = ? WHERE id = ?", [
-                data[0].completed ? 0 : 1,
+                !data[0].completed,
                 id,
             ]);
 

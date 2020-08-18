@@ -2,12 +2,13 @@ import path from "path";
 import dotenv from "dotenv";
 import express from "express";
 import validate from "./validate";
-import db from "./db";
+import sql from "./sql";
+import * as todo from "./dao/todo";
 
 dotenv.config();
 
 const app = express();
-const { PORT } = process.env;
+const { NODE_ENV, PORT } = process.env;
 const API_ENDPOINT = "/api/todo";
 
 app.set("view engine", "html");
@@ -21,11 +22,10 @@ app.use(express.static(path.join(__dirname, "../dist")));
 app.get("/", (_, res) => res.render("index"));
 
 app.route(API_ENDPOINT)
-    .get(async (req, res) => {
+    .get(async (_, res) => {
         try {
-            const [data] = await db(
-                "SELECT id, title, completed from list where deleteFlag = 0 order by id desc"
-            );
+            const [data] = await todo.getList();
+
             res.status(200).json(data);
         } catch (e) {
             res.status(400).json(e);
@@ -46,9 +46,7 @@ app.route(API_ENDPOINT)
                 req.body
             );
 
-            const [data] = await db("INSERT INTO list(title) VALUES (?)", [
-                title,
-            ]);
+            const [data] = await todo.insert(title);
             res.status(200).json(data);
         } catch (e) {
             res.status(400).json(e);
@@ -60,16 +58,9 @@ app.route(`${API_ENDPOINT}/:id`)
         const { id } = req.params;
 
         try {
-            const [data] = await db("SELECT completed from list WHERE id = ?", [
-                id,
-            ]);
+            const [data] = await todo.getListById(id);
 
-            const [
-                updateData,
-            ] = await db("UPDATE list SET completed = ? WHERE id = ?", [
-                !data[0].completed,
-                id,
-            ]);
+            const [updateData] = await todo.updateCompletedById(data, id);
 
             res.status(200).json(updateData);
         } catch (e) {
@@ -80,9 +71,7 @@ app.route(`${API_ENDPOINT}/:id`)
         const { id } = req.params;
 
         try {
-            const [
-                data,
-            ] = await db("UPDATE list SET deleteFlag = 1 WHERE id = ?", [id]);
+            const [data] = await todo.remove(id);
 
             res.status(200).json(data);
         } catch (e) {
@@ -90,4 +79,8 @@ app.route(`${API_ENDPOINT}/:id`)
         }
     });
 
-app.listen(PORT, () => console.log(`Todo App Running PORT: ${PORT}`));
+if (NODE_ENV !== "test") {
+    app.listen(PORT, () => console.log(`Todo App Running PORT: ${PORT}`));
+}
+
+export default app;

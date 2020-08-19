@@ -2,7 +2,7 @@ import sql from "../sql";
 
 export const selectList = async () => {
     const data = await sql(
-        "sSELECT id, title, completed from list where deleteFlag = 0 order by id desc"
+        "SELECT id, title, completed from list where deleteFlag = 0 order by id desc"
     );
 
     return data;

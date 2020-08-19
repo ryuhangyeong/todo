@@ -12,14 +12,14 @@ const pool = mysql.createPool({
     connectionLimit: 50,
 });
 
-export default async (query, params = []) => {
+export default async (sql, params = []) => {
     try {
         const connection = await pool.getConnection(async (_) => _);
-        const data = await connection.query(query, params);
+        const data = await connection.query(sql, params);
         connection.release();
+
         return data;
     } catch (e) {
-        console.log(e);
         throw e;
     }
 };

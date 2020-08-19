@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 import validate from "./validate";
 import sql from "./sql";
-import * as todo from "./dao/todo";
+import * as todoService from "./service/todo";
 
 dotenv.config();
 
@@ -24,10 +24,11 @@ app.get("/", (_, res) => res.render("index"));
 app.route(API_ENDPOINT)
     .get(async (_, res) => {
         try {
-            const [data] = await todo.getList();
+            const [data] = await todoService.getList();
 
             res.status(200).json(data);
         } catch (e) {
+            console.log("444");
             res.status(400).json(e);
         }
     })
@@ -46,7 +47,7 @@ app.route(API_ENDPOINT)
                 req.body
             );
 
-            const [data] = await todo.insert(title);
+            const [data] = await todoService.create(title);
             res.status(200).json(data);
         } catch (e) {
             res.status(400).json(e);
@@ -58,9 +59,12 @@ app.route(`${API_ENDPOINT}/:id`)
         const { id } = req.params;
 
         try {
-            const [data] = await todo.getListById(id);
+            const [data] = await todoService.getListById(id);
 
-            const [updateData] = await todo.updateCompletedById(data, id);
+            const [updateData] = await todoService.modifyCompletedById(
+                data,
+                id
+            );
 
             res.status(200).json(updateData);
         } catch (e) {
@@ -71,7 +75,7 @@ app.route(`${API_ENDPOINT}/:id`)
         const { id } = req.params;
 
         try {
-            const [data] = await todo.remove(id);
+            const [data] = await todoService.modifyDeleteFlagById(id);
 
             res.status(200).json(data);
         } catch (e) {

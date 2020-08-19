@@ -1,7 +1,7 @@
 module.exports = {
     clearMocks: true,
     transform: {
-        '^.+\\.js$': 'babel-jest'
+        "^.+\\.js$": "babel-jest"
     },
     testEnvironment: "node",
     testMatch: [

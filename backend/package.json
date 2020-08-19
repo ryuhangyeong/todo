@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint-auto-fix src/**/*.js",
+    "lint": "eslint-auto-fix src/**/*.js __tests__/**/*.js",
     "dev": "nodemon --exec babel-node src/index.js",
     "start": "babel-node src/index.js",
-    "test": "jest --config=jest.config.js"
+    "test": "cross-env NODE_ENV=test jest --config=jest.config.js --forceExit"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +26,7 @@
     "@babel/register": "^7.10.5",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.3.0",
+    "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
     "eslint": "^7.6.0",
     "eslint-auto-fix": "^1.0.3",
@@ -34,7 +35,8 @@
     "husky": "^4.2.5",
     "jest": "^26.3.0",
     "nodemon": "^2.0.4",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "supertest": "^4.0.2"
   },
   "husky": {
     "hooks": {

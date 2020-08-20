@@ -5,3 +5,10 @@ workflows:
   node-tests:
     jobs:
       - node/test
+        docker:
+        - image: circleci/ruby:2.4.2-jessie-node
+        steps:
+        - checkout
+        - run: cd frontend
+        - run: npm install
+        - run: npm run test

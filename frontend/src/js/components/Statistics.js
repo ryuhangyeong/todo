@@ -33,7 +33,7 @@ export default class Statistics {
                 (s) => `
         	<li class="statistics__item">
 				<a href="#${s.label}" class="statistics__link" data-label="${s.label}">
-					<strong>${s.count}</strong>
+					<strong>${s.length}</strong>
 					<p>${s.label}</p>
 				</a>
 			</li>

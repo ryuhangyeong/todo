@@ -3,6 +3,7 @@ module.exports = {
     transform: {
         '^.+\\.js$': 'babel-jest'
     },
+    testPathIgnorePatterns: ["/helpers"],
     testEnvironment: "node",
     testMatch: [
         "**/__tests__/**/*.[jt]s?(x)",

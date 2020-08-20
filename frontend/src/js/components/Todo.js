@@ -4,7 +4,7 @@ import { request, API_ENDPOINT } from "../utils/request";
 export default class Todo {
     $wrap = null;
     $todo = null;
-    list = null;
+    todo = null;
     routes = null;
     statistics = null;
     modal = null;
@@ -19,7 +19,7 @@ export default class Todo {
         this.$wrap.appendChild(this.$todo);
         $target.appendChild(this.$wrap);
 
-        this.list = initialData.list;
+        this.todo = initialData.todo;
         this.routes = initialData.routes;
 
         this.statistics = statistics;
@@ -70,14 +70,15 @@ export default class Todo {
     }
 
     create(newData) {
-        this.list = [newData, ...this.list];
+        this.todo.create(newData);
         this.render();
-        this.statistics.setState(statistics(this.list));
+        this.statistics.setState(statistics(this.todo.getList()));
     }
 
     render() {
-        if (!this.list.length) return;
-        this.$todo.innerHTML = this.list
+        if (!this.todo.size()) return;
+        this.$todo.innerHTML = this.todo
+            .getList()
             .map(
                 (t) =>
                     `
@@ -98,7 +99,7 @@ export default class Todo {
         for (const todo of document.querySelectorAll(".todo__item"))
             todo.style.display = "flex";
 
-        this.list.forEach((d) => {
+        this.todo.getList().forEach((d) => {
             if (routes === "Active" && d.completed) this._hide(d.id);
             if (routes === "Completed" && !d.completed) this._hide(d.id);
         });
@@ -118,10 +119,8 @@ export default class Todo {
             },
         });
 
-        const index = this.list.findIndex((d) => d.id === id);
-
-        this.list[index].completed = this.list[index].completed ? 0 : 1;
-        this.statistics.setState(statistics(this.list));
+        this.todo.updateCompleted(id);
+        this.statistics.setState(statistics(this.todo.getList()));
         this.statistics.active(this.routes);
 
         this.filter(this.routes);
@@ -139,11 +138,8 @@ export default class Todo {
 
         setTimeout(() => this.$todo.removeChild(target.parentNode), 1000);
 
-        this.list.splice(
-            this.list.findIndex((d) => d.id === id),
-            1
-        );
-        this.statistics.setState(statistics(this.list));
+        this.todo.destory(id);
+        this.statistics.setState(statistics(this.todo.getList()));
         this.statistics.active(this.routes);
     }
 }

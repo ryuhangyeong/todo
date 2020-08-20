@@ -14,7 +14,7 @@ module.exports = merge(common, {
 			"/api": "http://localhost:80"
 		}
 	},
-	devtool: "cheap-eval-source-map",
+	devtool: "inline-source-map",
 	module: {
 		rules: [
 			{

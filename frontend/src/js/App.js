@@ -4,13 +4,14 @@ import Statistics from "./components/Statistics";
 import Form from "./components/Form";
 import Todo from "./components/Todo";
 import statistics from "./utils/statistics";
+import todoModel from "./models/todo";
 import { request, API_ENDPOINT } from "./utils/request";
 import { getHash } from "./utils/routes";
 
 export default class App {
     state = {
-        list: [],
-        statistics: [],
+        todo: new todoModel(),
+        statistics,
         routes: "All",
     };
 
@@ -22,8 +23,9 @@ export default class App {
     async init($target) {
         const list = await request({ url: API_ENDPOINT, opts: {} });
 
-        this.state.list = list;
-        this.state.statistics = statistics(this.state.list);
+        this.state.todo.init(list);
+
+        this.state.statistics = statistics(this.state.todo.list);
 
         this.$target = $target;
 
@@ -61,7 +63,7 @@ export default class App {
         this.todo = new Todo({
             $target: this.main.$main,
             initialData: {
-                list: this.state.list,
+                todo: this.state.todo,
                 routes: this.state.routes,
             },
             statistics: this.statistics,

@@ -4,6 +4,7 @@ import { request, API_ENDPOINT } from "../utils/request";
 export default class Todo {
     $target = null;
     $wrap = null;
+    $document = null;
     $todo = null;
     todo = null;
     routes = null;
@@ -18,10 +19,11 @@ export default class Todo {
     }
 
     dom(document) {
-        this.$wrap = document.createElement("section");
+        this.$document = document;
+        this.$wrap = this.$document.createElement("section");
         this.$wrap.className = "todo";
 
-        this.$todo = document.createElement("ul");
+        this.$todo = this.$document.createElement("ul");
 
         this.$wrap.appendChild(this.$todo);
         this.$target.appendChild(this.$wrap);
@@ -105,7 +107,7 @@ export default class Todo {
     }
 
     filter(routes) {
-        for (const todo of document.querySelectorAll(".todo__item"))
+        for (const todo of this.$document.querySelectorAll(".todo__item"))
             todo.style.display = "flex";
 
         this.todo.getList().forEach((d) => {
@@ -119,7 +121,30 @@ export default class Todo {
     }
 
     _hide(id) {
-        document.querySelector(`[data-id="${id}"]`).style.display = "none";
+        this.$document.querySelector(`[data-id="${id}"]`).style.display =
+            "none";
+
+        return this;
+    }
+
+    deleteItem(target) {
+        target.parentNode.classList.add("todo__item--hide");
+        setTimeout(() => this.$todo.removeChild(target.parentNode), 1000);
+    }
+
+    async delete(id, target) {
+        await request({
+            url: `${API_ENDPOINT}/${id}`,
+            opts: {
+                method: "DELETE",
+            },
+        });
+
+        this.deleteItem(target);
+
+        this.todo.destory(id);
+        this.statistics.setState(statistics(this.todo.getList()));
+        this.statistics.active(this.routes);
 
         return this;
     }
@@ -137,25 +162,6 @@ export default class Todo {
         this.statistics.active(this.routes);
 
         this.filter(this.routes);
-
-        return this;
-    }
-
-    async delete(id, target) {
-        await request({
-            url: `${API_ENDPOINT}/${id}`,
-            opts: {
-                method: "DELETE",
-            },
-        });
-
-        target.parentNode.classList.add("todo__item--hide");
-
-        setTimeout(() => this.$todo.removeChild(target.parentNode), 1000);
-
-        this.todo.destory(id);
-        this.statistics.setState(statistics(this.todo.getList()));
-        this.statistics.active(this.routes);
 
         return this;
     }

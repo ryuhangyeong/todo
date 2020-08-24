@@ -4,7 +4,7 @@ import Statistics from "./components/Statistics";
 import Form from "./components/Form";
 import Todo from "./components/Todo";
 import statistics from "./utils/statistics";
-import todoModel from "./models/todo";
+import TodoModel from "./models/todo";
 import { request, API_ENDPOINT } from "./utils/request";
 import { getHash } from "./utils/routes";
 
@@ -12,7 +12,7 @@ export default class App {
     $target = null;
 
     state = {
-        todo: new todoModel(),
+        todo: new TodoModel(),
         statistics,
         routes: "All",
     };

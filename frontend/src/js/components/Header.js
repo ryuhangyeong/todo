@@ -1,9 +1,14 @@
 export default class Header {
+    $target = null;
     $wrap = null;
     $header = null;
     $title = null;
 
     constructor({ $target }) {
+        this.$target = $target;
+    }
+
+    dom(document) {
         this.$wrap = document.createElement("section");
 
         this.$header = document.createElement("header");
@@ -13,6 +18,8 @@ export default class Header {
 
         this.$header.appendChild(this.$title);
         this.$wrap.appendChild(this.$header);
-        $target.appendChild(this.$wrap);
+        this.$target.appendChild(this.$wrap);
+
+        return this;
     }
 }

@@ -4,37 +4,43 @@ import Statistics from "./components/Statistics";
 import Form from "./components/Form";
 import Todo from "./components/Todo";
 import statistics from "./utils/statistics";
+import todoModel from "./models/todo";
 import { request, API_ENDPOINT } from "./utils/request";
 import { getHash } from "./utils/routes";
 
 export default class App {
+    $target = null;
+
     state = {
-        list: [],
-        statistics: [],
+        todo: new todoModel(),
+        statistics,
         routes: "All",
     };
 
     constructor($target) {
-        this.init($target);
+        this.$target = $target;
+
+        this.init();
         this.event();
     }
 
-    async init($target) {
+    async init() {
         const list = await request({ url: API_ENDPOINT, opts: {} });
 
-        this.state.list = list;
-        this.state.statistics = statistics(this.state.list);
+        this.state.todo.init(list);
 
-        this.$target = $target;
+        this.state.statistics = statistics(this.state.todo.list);
 
-        this.header = new Header({ $target: this.$target });
+        this.header = new Header({ $target: this.$target }).dom(document);
 
-        this.main = new Main({ $target: this.$target });
+        this.main = new Main({ $target: this.$target }).dom(document);
 
         this.statistics = new Statistics({
             $target: this.main.$main,
             initialData: this.state.statistics,
-        });
+        })
+            .dom(document)
+            .render();
 
         this.form = new Form({
             $target: this.main.$main,
@@ -56,18 +62,24 @@ export default class App {
                 window.location.hash = "#All";
                 this.state.routes = "All";
             },
-        });
+        })
+            .dom(document)
+            .event();
 
         this.todo = new Todo({
             $target: this.main.$main,
             initialData: {
-                list: this.state.list,
-                routes: this.state.routes,
+                todo: this.state.todo,
             },
             statistics: this.statistics,
-        });
+        })
+            .dom(document)
+            .event()
+            .render();
 
         this.initRoutes();
+
+        return this;
     }
 
     initRoutes() {
@@ -75,6 +87,7 @@ export default class App {
 
         this.state.routes = hash;
         this.todo.filter(hash);
+        this.statistics.active(hash);
     }
 
     event() {
@@ -84,5 +97,7 @@ export default class App {
             this.todo.filter(hash);
             this.statistics.active(hash);
         };
+
+        return this;
     }
 }

@@ -129,7 +129,13 @@ export default class Todo {
 
     deleteItem(target) {
         target.parentNode.classList.add("todo__item--hide");
-        setTimeout(() => this.$todo.removeChild(target.parentNode), 1000);
+
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                this.$todo.removeChild(target.parentNode);
+                resolve(this);
+            }, 1000);
+        });
     }
 
     async delete(id, target) {
@@ -140,7 +146,7 @@ export default class Todo {
             },
         });
 
-        this.deleteItem(target);
+        await this.deleteItem(target);
 
         this.todo.destory(id);
         this.statistics.setState(statistics(this.todo.getList()));

@@ -9,11 +9,12 @@ import stat from "../../src/js/utils/statistics";
 const html = getIndex();
 
 describe("components/Todo", () => {
-	let dom, document, body, todo, statistics, todoModel, $app;
+	let dom, window, document, body, todo, statistics, todoModel, $app;
 
 	beforeEach(() => {
 		dom = new JSDOM(html, { runScripts: "dangerously" });
-		document = dom.window.document;
+		window = dom.window;
+		document = window.document;
 		body = document.body;
 
 		$app = body.querySelector("#app");
@@ -37,7 +38,7 @@ describe("components/Todo", () => {
 	});
 
 	afterEach(() => {
-		dom = document = body = $app = todoModel = statistics = todo = null;
+		dom = window = document = body = $app = todoModel = statistics = todo = null;
 	});
 
 	it("Todo/render", () => {
@@ -102,11 +103,81 @@ describe("components/Todo", () => {
 		});
 	});
 
-	describe.skip("Todo/delete", () => {
+	describe("Todo/delete", () => {
+		it("deleteItem", async () => {
+			todo
+				.render();
+			
+			await todo.deleteItem($app.querySelectorAll(".todo__delete")[0]);
 
+			expect($app.querySelector("[data-id='1']")).toBe(null);
+		});
+
+		it("delete", async () => {
+			fetch.mockResponse(JSON.stringify({
+				changedRows: 1
+			}));
+
+			todo
+				.render();
+
+			await todo.delete(1, $app.querySelectorAll(".todo__delete")[0]);
+
+			expect(fetch).toHaveBeenCalledTimes(1);
+			expect($app.querySelector("[data-id='1']")).toBe(null);
+			expect(todo.todo.getList().findIndex((t) => t.id === 1)).toBe(-1);
+			expect(todo.statistics.data[0].length).toBe(2);
+		});
 	});
 
-	it.skip("Todo/toggle", () => {
+	it("Todo/toggle", async () => {
+		fetch.mockResponse(JSON.stringify({
+			changedRows: 1
+		}));
 
+		todo
+			.render();
+
+		await todo.toggle(1);
+
+		expect(fetch).toHaveBeenCalledTimes(1);
+		expect(todo.todo.getList()[0].completed).toBe(1);
+		expect(todo.statistics.data[2].length).toBe(1);
+	});
+
+	describe("Todo/event", () => {
+		it("event/delete", () => {
+			fetch.mockResponse(JSON.stringify({
+				changedRows: 1
+			}));
+
+			todo
+				.render()
+				.event();
+
+			$app.querySelectorAll(".todo__delete")[0].click();
+
+			expect(fetch).toHaveBeenCalledTimes(1);
+		});
+
+		it("event/toggle", () => {
+			todo
+				.render()
+				.event();
+
+			$app.querySelectorAll(".todo__label")[0].click();
+
+			expect(fetch).toHaveBeenCalledTimes(1);
+		});
+
+		/*
+		 * @description 동적 import 하는 코드에서는 어떻게 테스트 코드를 작성할 수 있을까?
+		 * mock 으로 처리를 해야할까?
+		 */
+		it.skip("event/modal", () => {
+			todo
+				.render()
+				.event();
+		});
 	});
 });

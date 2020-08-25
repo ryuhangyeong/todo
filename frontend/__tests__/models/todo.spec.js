@@ -17,12 +17,12 @@ describe("models/todo", () => {
 
 	afterEach(() => todo.clear());
 
-	it("추가", () => {
+	it("create", () => {
 		todo.create(createTodo(id, getDummyText()));
 		expect(todo.size()).toBe(len + 1);
 	});
 
-	it("검색", () => {
+	it("getIdxById", () => {
 		let idx = todo.getIdxById(id);
 
 		expect(idx).toBe(NOT_FOUND);
@@ -34,7 +34,7 @@ describe("models/todo", () => {
 		expect(idx).not.toBe(NOT_FOUND);
 	});
 
-	it("삭제", () => {
+	it("destory", () => {
 		todo.destory(NOT_FOUND);
 
 		expect(todo.size()).toBe(len);
@@ -44,7 +44,7 @@ describe("models/todo", () => {
 		expect(todo.size()).toBe(len - 1);
 	});
 
-	it("완료", () => {
+	it("updateCompleted", () => {
 		const T = 1,
 			idx = todo.getIdxById(T);
 
@@ -55,7 +55,7 @@ describe("models/todo", () => {
 		expect(todo.list[idx].completed).toBe(1);
 	});
 
-	it("초기화", () => {
+	it("clear", () => {
 		expect(todo.size()).toBe(len);
 
 		todo.clear();

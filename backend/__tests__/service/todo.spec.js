@@ -26,9 +26,8 @@ describe("service/todo", () => {
         selectListById.mockClear();
     });
 
-    it.only("getList", async (done) => {
+    it("getList", async (done) => {
         await getList();
-        console.log(selectList);
         expect(selectList).toBeCalledTimes(1);
 
         done();

@@ -1,5 +1,7 @@
 # Todo.
 
+[![CircleCI](https://circleci.com/gh/ryuhangyeong/todo.svg?style=svg)](https://github.com/ryuhangyeong/todo)
+
 ## 프로젝트 수행 이유
 
 1. 최신 자바스크립트 개발 환경 구축 학습 및 실전

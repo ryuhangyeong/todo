@@ -7,8 +7,8 @@
     "lint": "eslint-auto-fix src/**/*.js __tests__/**/*.js",
     "dev": "nodemon --exec babel-node src/index.js",
     "start": "babel-node src/index.js",
-    "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test": "jest --forceExit",
+    "test:watch": "jest --watchAll --forceExit"
   },
   "keywords": [],
   "author": "",

@@ -61,7 +61,7 @@ app.route(`${API_ENDPOINT}/:id`)
             const [data] = await todoService.getListById(id);
 
             const [updateData] = await todoService.modifyCompletedById(
-                data,
+                data[0].completed,
                 id
             );
 

@@ -4,9 +4,9 @@ import app from "../src/index";
 const API_ENDPOINT = "/api/todo";
 
 /*
-    좋은 테스트 코드 작성을 위해 고민중에 있습니다.
+    @description 좋은 테스트 코드 작성을 위해 고민중에 있습니다.
  */
-describe(`${API_ENDPOINT}`, () => {
+describe.skip(`${API_ENDPOINT}`, () => {
     it("GET/", async (done) => {
         const res = await request(app)
             .get(API_ENDPOINT)

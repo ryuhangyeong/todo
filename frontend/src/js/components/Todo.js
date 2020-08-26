@@ -80,6 +80,7 @@ export default class Todo {
         this.todo.create(newData);
         this.render();
         this.statistics.setState(statistics(this.todo.getList()));
+        this.statistics.active(this.routes);
 
         return this;
     }

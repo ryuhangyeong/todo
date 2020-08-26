@@ -7,7 +7,8 @@
     "lint": "eslint-auto-fix src/**/*.js __tests__/**/*.js",
     "dev": "nodemon --exec babel-node src/index.js",
     "start": "babel-node src/index.js",
-    "test": "cross-env NODE_ENV=test jest --config=jest.config.js --forceExit"
+    "test": "jest",
+    "test:watch": "jest --watchAll"
   },
   "keywords": [],
   "author": "",

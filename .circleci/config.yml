@@ -1,6 +1,6 @@
-version: 2
+version: 2.1
 jobs:
-  build:
+  frontend:
     docker:
       - image: circleci/node:10.16
     working_directory: ~/repo/frontend
@@ -9,3 +9,18 @@ jobs:
           path: ~/repo
       - run: npm install
       - run: npm run test
+  backend:
+    docker:
+      - image: circleci/node:10.16
+    working_directory: ~/repo/backend
+    steps:
+      - run: npm install
+      - run: npm run test
+workflows:
+  version: 2
+  Example_Workflow:
+    jobs:
+      - frontend
+      - backend:
+          requires:
+            - frontend
